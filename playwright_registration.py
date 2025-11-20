@@ -1,0 +1,23 @@
+from playwright.sync_api import sync_playwright, expect
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=False)
+    page = browser.new_page()
+    page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration")
+
+    registration_email = page.get_by_test_id('registration-form-email-input').locator('input')
+    registration_email.fill("user.name@gmail.com")
+
+    registration_username = page.get_by_test_id('registration-form-username-input').locator('input')
+    registration_username.fill("username")
+
+    registration_password = page.get_by_test_id('registration-form-password-input').locator('input')
+    registration_password.fill("password")
+
+    registration_button = page.get_by_test_id('registration-page-registration-button')
+    expect(registration_button).to_be_visible()
+    registration_button.click()
+
+    dashboard_toolbar = page.get_by_test_id('dashboard-toolbar-title-text')
+    expect(dashboard_toolbar).to_be_visible()
+    expect(dashboard_toolbar).to_have_text("Dashboard")
